@@ -636,7 +636,7 @@ namespace ICSharpCode.TextEditor.Actions
 		public override void Execute(TextArea textArea)
 		{
 			int curLineNr           = textArea.Caret.Line;
-			int requestedLineNumber = Math.Min(textArea.Document.GetNextVisibleLineAbove(curLineNr, textArea.TextView.VisibleLineCount), textArea.Document.TotalNumberOfLines - 1);
+			int requestedLineNumber = Math.Min(textArea.Document.GetNextVisibleLineAbove(curLineNr, textArea.TextView.VisibleLineCount - 1), textArea.Document.TotalNumberOfLines - 1);
 			
 			if (curLineNr != requestedLineNumber) {
 				textArea.Caret.Position = new TextLocation(0, requestedLineNumber);
@@ -654,7 +654,7 @@ namespace ICSharpCode.TextEditor.Actions
 		public override void Execute(TextArea textArea)
 		{
 			int curLineNr           = textArea.Caret.Line;
-			int requestedLineNumber = Math.Max(textArea.Document.GetNextVisibleLineBelow(curLineNr, textArea.TextView.VisibleLineCount), 0);
+			int requestedLineNumber = Math.Max(textArea.Document.GetNextVisibleLineBelow(curLineNr, textArea.TextView.VisibleLineCount - 1), 0);
 			
 			if (curLineNr != requestedLineNumber) {
 				textArea.Caret.Position = new TextLocation(0, requestedLineNumber);

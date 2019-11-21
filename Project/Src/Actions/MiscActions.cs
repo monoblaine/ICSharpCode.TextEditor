@@ -626,7 +626,7 @@ namespace ICSharpCode.TextEditor.Actions
         public override void Execute(TextArea textArea)
         {
             var curLineNr = textArea.Caret.Line;
-            var requestedLineNumber = Math.Min(textArea.Document.GetNextVisibleLineAbove(curLineNr, textArea.TextView.VisibleLineCount - 1), textArea.Document.TotalNumberOfLines - 1);
+            var requestedLineNumber = Math.Min(textArea.Document.GetNextVisibleLineAbove(curLineNr, textArea.TextView.VisibleLineCount - 2), textArea.Document.TotalNumberOfLines - 1);
 
             if (curLineNr != requestedLineNumber)
             {
@@ -645,7 +645,7 @@ namespace ICSharpCode.TextEditor.Actions
         public override void Execute(TextArea textArea)
         {
             var curLineNr = textArea.Caret.Line;
-            var requestedLineNumber = Math.Max(textArea.Document.GetNextVisibleLineBelow(curLineNr, textArea.TextView.VisibleLineCount - 1), val2: 0);
+            var requestedLineNumber = Math.Max(textArea.Document.GetNextVisibleLineBelow(curLineNr, textArea.TextView.VisibleLineCount - 2), val2: 0);
 
             if (curLineNr != requestedLineNumber)
             {

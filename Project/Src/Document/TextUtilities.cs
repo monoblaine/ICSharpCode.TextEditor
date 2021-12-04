@@ -184,6 +184,21 @@ namespace ICSharpCode.TextEditor.Document
             return offset;
         }
 
+        public static int FindScintillaWordEnd(IDocument document, int offset)
+        {
+            var line = document.GetLineSegmentForOffset(offset);
+            var endPos = line.Offset + line.Length;
+            CharacterType t;
+
+            while ((t = GetCharacterType(document.GetCharAt(offset))) == CharacterType.WhiteSpace && offset < endPos)
+                ++offset;
+
+            while (offset < endPos && GetCharacterType(document.GetCharAt(offset)) == t)
+                ++offset;
+
+            return offset;
+        }
+
         public static int FindWordStart(IDocument document, int offset)
         {
             var line = document.GetLineSegmentForOffset(offset);

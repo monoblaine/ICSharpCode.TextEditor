@@ -146,8 +146,8 @@ namespace ICSharpCode.TextEditor.Actions
             }
             else
             {
-                var nextWordStart = TextUtilities.FindNextWordStart(textArea.Document, textArea.Caret.Offset);
-                newPos = textArea.Document.OffsetToPosition(nextWordStart);
+                var wordEnd = TextUtilities.FindScintillaWordEnd(textArea.Document, textArea.Caret.Offset);
+                newPos = textArea.Document.OffsetToPosition(wordEnd);
             }
 
             // handle fold markers

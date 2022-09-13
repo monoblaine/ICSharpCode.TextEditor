@@ -11,10 +11,47 @@ using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor.Actions
 {
-    public class CaretLeft : AbstractEditAction
+    public abstract class CaretHorizontal : AbstractEditAction
     {
+        private readonly bool _collapsibleToEdge;
+
+        private protected CaretHorizontal(bool collapsibleToEdge)
+        {
+            _collapsibleToEdge = collapsibleToEdge;
+        }
+
+        private protected bool HandleCollapseToEdge(TextArea textArea)
+        {
+            bool shouldCollapseToEdge = _collapsibleToEdge && textArea.SelectionManager.HasSomethingSelected;
+            if (shouldCollapseToEdge)
+            {
+                textArea.Caret.Position = GetCollapseTarget(textArea.SelectionManager.SelectionCollection[0]);
+                textArea.SetDesiredColumn();
+            }
+            return shouldCollapseToEdge;
+        }
+
+        private protected abstract TextLocation GetCollapseTarget(ISelection selection);
+    }
+
+    public class CaretLeft : CaretHorizontal
+    {
+        public CaretLeft(bool collapsibleToEdge = false) : base(collapsibleToEdge: collapsibleToEdge)
+        {
+        }
+
+        private protected sealed override TextLocation GetCollapseTarget(ISelection selection)
+        {
+            return selection.StartPosition;
+        }
+
         public override void Execute(TextArea textArea)
         {
+            if (HandleCollapseToEdge(textArea))
+            {
+                return;
+            }
+
             var position = textArea.Caret.Position;
             var foldings = textArea.Document.FoldingManager.GetFoldedFoldingsWithEnd(position.Y);
             FoldMarker justBeforeCaret = null;
@@ -48,10 +85,24 @@ namespace ICSharpCode.TextEditor.Actions
         }
     }
 
-    public class CaretRight : AbstractEditAction
+    public class CaretRight : CaretHorizontal
     {
+        public CaretRight(bool collapsibleToEdge = false) : base(collapsibleToEdge: collapsibleToEdge)
+        {
+        }
+
+        private protected sealed override TextLocation GetCollapseTarget(ISelection selection)
+        {
+            return selection.EndPosition;
+        }
+
         public override void Execute(TextArea textArea)
         {
+            if (HandleCollapseToEdge(textArea))
+            {
+                return;
+            }
+
             var curLine = textArea.Document.GetLineSegment(textArea.Caret.Line);
             var position = textArea.Caret.Position;
             var foldings = textArea.Document.FoldingManager.GetFoldedFoldingsWithStart(position.Y);

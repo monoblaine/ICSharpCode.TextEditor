@@ -197,11 +197,11 @@ namespace ICSharpCode.TextEditor
 
         private void GenerateDefaultActions()
         {
-            editactions[Keys.Left] = new CaretLeft();
+            editactions[Keys.Left] = new CaretLeft(collapsibleToEdge: true);
             editactions[Keys.Left | Keys.Shift] = new ShiftCaretLeft();
             editactions[Keys.Left | Keys.Control] = new WordLeft();
             editactions[Keys.Left | Keys.Control | Keys.Shift] = new ShiftWordLeft();
-            editactions[Keys.Right] = new CaretRight();
+            editactions[Keys.Right] = new CaretRight(collapsibleToEdge: true);
             editactions[Keys.Right | Keys.Shift] = new ShiftCaretRight();
             editactions[Keys.Right | Keys.Control] = new WordRight();
             editactions[Keys.Right | Keys.Control | Keys.Shift] = new ShiftWordRight();
